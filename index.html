@@ -1,1 +1,287 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vakinha 2026</title>
+  <style>
+    :root{
+      --bg:#0b0b0b; --card:#141414; --text:#f2f2f2; --muted:#bdbdbd;
+      --border:#2a2a2a; --btn:#1f1f1f; --btnHover:#2b2b2b; --ok:#7CFC98; --warn:#ffd37a;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(1200px 600px at 20% 0%, #1a1a1a 0%, var(--bg) 60%);
+      color:var(--text); line-height:1.35;
+    }
+    .topbar{
+      position:sticky; top:0; z-index:10;
+      backdrop-filter: blur(10px);
+      background: rgba(10,10,10,0.75);
+      border-bottom:1px solid var(--border);
+    }
+    .wrap{max-width:1100px; margin:0 auto; padding:12px 16px}
+    .topbar .wrap{display:flex; gap:12px; align-items:center; justify-content:space-between}
+    .brand{display:flex; align-items:center; gap:10px}
+    .badge{font-size:12px; color:var(--muted); border:1px solid var(--border); padding:6px 10px; border-radius:999px}
+    .nav{display:flex; gap:14px; align-items:center; flex-wrap:wrap}
+    .nav a{font-size:14px; color:var(--muted); text-decoration:none}
+    .nav a:hover{color:var(--text)}
 
+    header{
+      max-width:1100px; margin:0 auto; padding:28px 16px 8px 16px;
+      display:grid; grid-template-columns: 1.1fr 0.9fr; gap:18px; align-items:stretch;
+    }
+    @media (max-width:900px){ header{grid-template-columns:1fr} }
+    .hero{
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      border:1px solid var(--border); border-radius:18px; padding:20px; min-height:260px;
+    }
+    .hero h1{margin:0 0 10px 0; font-size:34px; letter-spacing:-0.4px}
+    .hero p{margin:0 0 14px 0; color:var(--muted); font-size:15px}
+    .ctaRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:14px}
+    .btn{
+      background:var(--btn); border:1px solid var(--border); color:var(--text);
+      padding:10px 12px; border-radius:12px; cursor:pointer; font-weight:600; font-size:14px; text-decoration:none;
+      display:inline-flex; align-items:center; justify-content:center;
+    }
+    .btn:hover{background:var(--btnHover)}
+    .btnPrimary{background:#fff; color:#000; border-color:#fff}
+    .btnPrimary:hover{filter:brightness(0.95)}
+    .sideCard{
+      background:var(--card); border:1px solid var(--border); border-radius:18px; padding:18px;
+      display:flex; flex-direction:column; gap:12px;
+    }
+    .imgBox{
+      background:#fff; border-radius:14px; overflow:hidden; border:1px solid #e6e6e6;
+      display:flex; align-items:center; justify-content:center; padding:12px;
+    }
+    .imgBox img{max-width:100%; height:auto; display:block}
+
+    main{
+      max-width:1100px; margin:0 auto; padding:12px 16px 60px 16px;
+      display:grid; grid-template-columns: 1fr 1fr; gap:18px; align-items:start;
+    }
+    @media (max-width:900px){ main{grid-template-columns:1fr} }
+    .card{background:var(--card); border:1px solid var(--border); border-radius:18px; padding:18px}
+    .card h2{margin:0 0 10px 0; font-size:20px}
+    .muted{color:var(--muted); font-size:14px}
+    .amountGrid{display:grid; grid-template-columns: repeat(4, 1fr); gap:10px; margin-top:12px}
+    @media (max-width:520px){ .amountGrid{grid-template-columns: repeat(2, 1fr);} }
+    .amt{
+      background:var(--btn); border:1px solid var(--border); border-radius:14px;
+      padding:12px 10px; cursor:pointer; text-align:center; font-weight:700; user-select:none;
+    }
+    .amt:hover{background:var(--btnHover)}
+    .amt.active{outline:2px solid rgba(255,255,255,0.6); background:#2b2b2b}
+    .row{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; align-items:center}
+    .field{
+      flex:1; min-width:180px; background:#101010; border:1px solid var(--border);
+      border-radius:12px; padding:10px 12px; color:var(--text); font-size:14px;
+    }
+    .copyBox{background:#101010; border:1px solid var(--border); border-radius:14px; padding:12px; margin-top:12px}
+    .copyLine{display:flex; gap:10px; align-items:center; justify-content:space-between; flex-wrap:wrap}
+    code{
+      color:#fff; background:#0b0b0b; border:1px solid var(--border);
+      padding:8px 10px; border-radius:12px; display:inline-block; max-width:100%; overflow:auto;
+    }
+    .status{margin-top:10px; font-size:13px; color:var(--muted)}
+    .status.ok{color:var(--ok)}
+    .status.warn{color:var(--warn)}
+    .steps{margin:12px 0 0 0; padding-left:18px; color:var(--muted); font-size:14px}
+    .footerNote{margin-top:12px; font-size:12px; color:var(--muted); border-top:1px dashed var(--border); padding-top:12px}
+  </style>
+</head>
+
+<body>
+  <div class="topbar">
+    <div class="wrap">
+      <div class="brand">
+        <strong>Vakinha 2026</strong>
+        <span class="badge">doação via Pix</span>
+      </div>
+      <nav class="nav">
+        <a href="#doar">Doar</a>
+        <a href="#como">Como pagar</a>
+        <a href="#transparencia">Transparência</a>
+      </nav>
+    </div>
+  </div>
+
+  <header>
+    <section class="hero">
+      <h1>Vakinha 2026</h1>
+      <p>
+        Selecione um valor, copie a chave Pix e finalize o pagamento no app do seu banco.
+      </p>
+      <div class="ctaRow">
+        <a class="btn btnPrimary" href="#doar">Doar agora</a>
+        <a class="btn" href="#como">Ver instruções</a>
+      </div>
+      <p class="footerNote">
+        Esta página não processa pagamento automaticamente. Você paga no app do seu banco.
+      </p>
+    </section>
+
+    <aside class="sideCard">
+      <div class="imgBox">
+        <img src="banner.png" alt="Imagem da campanha" />
+      </div>
+      <div class="muted">
+        Se a imagem não aparecer, confira se o arquivo foi enviado como <b>banner.png</b> na raiz do repositório.
+      </div>
+    </aside>
+  </header>
+
+  <main>
+    <section id="doar" class="card">
+      <h2>Escolha o valor</h2>
+      <div class="muted">Toque em um valor ou digite outro. Depois, copie a chave Pix.</div>
+
+      <div class="amountGrid" id="amountGrid">
+        <div class="amt" data-value="5">R$ 5</div>
+        <div class="amt" data-value="10">R$ 10</div>
+        <div class="amt" data-value="15">R$ 15</div>
+        <div class="amt" data-value="20">R$ 20</div>
+        <div class="amt" data-value="50">R$ 50</div>
+        <div class="amt" data-value="100">R$ 100</div>
+        <div class="amt" data-value="500">R$ 500</div>
+        <div class="amt" data-value="1000">R$ 1000</div>
+      </div>
+
+      <div class="row">
+        <input id="customAmount" class="field" type="number" min="1" step="1" placeholder="Outro valor (ex: 35)" />
+        <button class="btn" id="clearBtn" type="button">Limpar</button>
+      </div>
+
+      <div class="copyBox">
+        <div class="copyLine">
+          <div>
+            <div class="muted">Chave Pix (fixa)</div>
+            <code id="pixKey">SUA_CHAVE_PIX_AQUI</code>
+          </div>
+          <div class="row">
+            <button class="btn" id="copyPixBtn" type="button">Copiar chave</button>
+          </div>
+        </div>
+
+        <div class="status" id="statusText">Selecione um valor para facilitar o pagamento no seu banco.</div>
+
+        <div class="footerNote">
+          Valor selecionado: <b id="selectedValue">nenhum</b>
+        </div>
+      </div>
+    </section>
+
+    <section id="como" class="card">
+      <h2>Como pagar</h2>
+      <ol class="steps">
+        <li>Escolha um valor aqui na página.</li>
+        <li>Copie a chave Pix.</li>
+        <li>Abra o app do seu banco e vá em Pix, pagar.</li>
+        <li>Cole a chave, confira o nome do recebedor e informe o valor.</li>
+        <li>Confirme o pagamento.</li>
+      </ol>
+      <div class="footerNote">
+        Segurança: confira o nome do recebedor no app do banco antes de confirmar.
+      </div>
+    </section>
+
+    <section id="transparencia" class="card">
+      <h2>Transparência</h2>
+      <p class="muted">
+        Escreva aqui: objetivo da campanha, responsáveis, e como será a prestação de contas.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>FAQ</h2>
+      <p class="muted">Posso doar qualquer valor? Sim, use o campo “Outro valor”.</p>
+      <p class="muted">O pagamento acontece aqui? Não, você paga no app do seu banco.</p>
+    </section>
+  </main>
+
+  <script>
+    const PIX_KEY = "SUA_CHAVE_PIX_AQUI";
+
+    const pixKeyEl = document.getElementById("pixKey");
+    const statusText = document.getElementById("statusText");
+    const selectedValueEl = document.getElementById("selectedValue");
+    const customAmount = document.getElementById("customAmount");
+    const clearBtn = document.getElementById("clearBtn");
+    const copyPixBtn = document.getElementById("copyPixBtn");
+    const amountGrid = document.getElementById("amountGrid");
+
+    pixKeyEl.textContent = PIX_KEY;
+
+    let selectedAmount = null;
+
+    function formatBRL(n){
+      if (!Number.isFinite(n)) return "";
+      return "R$ " + n.toLocaleString("pt-BR", {minimumFractionDigits: 0});
+    }
+
+    function setActive(el){
+      document.querySelectorAll(".amt").forEach(x => x.classList.remove("active"));
+      if (el) el.classList.add("active");
+    }
+
+    function updateStatus(){
+      if (!selectedAmount){
+        selectedValueEl.textContent = "nenhum";
+        statusText.className = "status";
+        statusText.textContent = "Selecione um valor para facilitar o pagamento no seu banco.";
+        return;
+      }
+      selectedValueEl.textContent = formatBRL(selectedAmount);
+      statusText.className = "status ok";
+      statusText.textContent = "Pronto. Copie a chave Pix e pague " + formatBRL(selectedAmount) + " no app do seu banco.";
+    }
+
+    amountGrid.addEventListener("click", (e) => {
+      const btn = e.target.closest(".amt");
+      if (!btn) return;
+
+      const value = Number(btn.dataset.value);
+      if (!Number.isFinite(value) || value <= 0) return;
+
+      selectedAmount = value;
+      customAmount.value = "";
+      setActive(btn);
+      updateStatus();
+    });
+
+    customAmount.addEventListener("input", () => {
+      const v = Number(customAmount.value);
+      if (Number.isFinite(v) && v > 0){
+        selectedAmount = Math.floor(v);
+        setActive(null);
+      } else {
+        selectedAmount = null;
+      }
+      updateStatus();
+    });
+
+    clearBtn.addEventListener("click", () => {
+      selectedAmount = null;
+      customAmount.value = "";
+      setActive(null);
+      updateStatus();
+    });
+
+    copyPixBtn.addEventListener("click", async () => {
+      try{
+        await navigator.clipboard.writeText(PIX_KEY);
+        statusText.className = "status ok";
+        statusText.textContent = "Chave Pix copiada. Cole no app do seu banco e confirme o recebedor.";
+      } catch (err){
+        statusText.className = "status warn";
+        statusText.textContent = "Não consegui copiar automaticamente. Copie a chave manualmente.";
+      }
+    });
+
+    updateStatus();
+  </script>
+</body>
+</html>
